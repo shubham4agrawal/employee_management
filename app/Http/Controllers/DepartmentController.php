@@ -80,6 +80,7 @@ class DepartmentController extends Controller
             }
             else {
                 $department->delete($id);
+                return response()->json(['message' => 'Department deleted successfully'], 200);
             }
         }
         catch (\Exception $e) {

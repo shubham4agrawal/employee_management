@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->string('address');
-            $table->string('city');
-            $table->string('state');
-            $table->string('pin_code');
-            $table->unsignedBigInteger('employee_id');
+            $table->string('address')->nullable(false);
+            $table->string('city')->nullable(false);
+            $table->string('state')->nullable(false);
+            $table->string('pin_code')->nullable(false);
+            $table->unsignedBigInteger('employee_id')->nullable(false);
             $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
             $table->timestamps();
         });

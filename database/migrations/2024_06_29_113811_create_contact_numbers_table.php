@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('contact_numbers', function (Blueprint $table) {
             $table->id();
-            $table->string('contact_number');
-            $table->unsignedBigInteger('employee_id');
+            $table->string('contact_number')->unique()->nullable(false);
+            $table->unsignedBigInteger('employee_id')->nullable(false);
             $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
             $table->timestamps();
         });

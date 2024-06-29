@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('firstname');
             $table->string('lastname');
-            $table->string('email')->unique();
-            $table->unsignedBigInteger('department_id');
+            $table->string('email')->unique()->nullable(false);
+            $table->unsignedBigInteger('department_id')->nullable(false);
             $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
             $table->date('date_of_birth');
             $table->timestamps();

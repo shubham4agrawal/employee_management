@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
@@ -11,7 +12,13 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $departments = Department::all();
+            return response()->json($departments);
+        }
+        catch (\Exception $e) {
+            return response(['error_message' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -19,7 +26,13 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $department = Department::create($request->all());
+            return response()->json($department, 201);
+        }
+        catch (\Exception $e) {
+            return response(['error_message' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -27,7 +40,12 @@ class DepartmentController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            return response()->json(['data' => Department::find($id)]);
+        }
+        catch (\Exception $e) {
+            return response(['error_message' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -35,7 +53,19 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $department = Department::find($id);
+            if (!$department) {
+                return response()->json(['error_message' => 'Department not found'], 404);
+            }
+            else {
+                $department->update($request->all());
+            }
+            return response()->json($department);
+        }
+        catch (\Exception $e) {
+            return response(['error_message' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -43,6 +73,17 @@ class DepartmentController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $department = Department::find($id);
+            if (!$department) {
+                return response()->json(['error_message' => 'Department not found'], 404);
+            }
+            else {
+                $department->delete($id);
+            }
+        }
+        catch (\Exception $e) {
+            return response()->json(['error_message' => $e->getMessage()], 500);
+        }
     }
 }

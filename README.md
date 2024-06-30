@@ -1,66 +1,214 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Employee Management docs
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Clone the repo
 
-## About Laravel
+```bash
+  git clone https://github.com/shubham4agrawal/employee_management/
+  cd employee_management/
+```  
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Install composer packages
+```bash
+  composer install
+```
+Copy the .env.example file to .env
+```bash
+  cp .env.example .env
+  php artisan key:generate
+```  
+Run migration command to create database and tables
+```bash
+  php artisan migrate
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Run the artisan command to insert fake data. Use the command in the speified order
+```bash
+  php artisan insert:fake-data Departments 1
+  php artisan insert:fake-data Employees {count}
+  php artisan insert:fake-data ContactNumbers {count}
+  php artisan insert:fake-data Addresses {count}
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+To serve the application locally, run the below command
+```bash
+  php artisan serve
+```
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## API Reference
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+###   Department Endpoints
+#### Get all departments
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```http
+  GET /api/departments
+```
 
-## Laravel Sponsors
+#### Get department by id
+```http
+  GET /api/departments/${id}
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+| Parameter | Type      | Description                            |
+|:----------|:----------|:---------------------------------------|
+| `id`      | `integer` | **Required** Id of department to fetch |
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
 
-## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+#### Create a new department
+```http
+  POST /api/departments/
+```
 
-## Code of Conduct
+| Request body param | Type     | Description                               |
+|:-------------------|:---------|:------------------------------------------|
+| `name`             | `string` | **Required** name of department to create |
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Request body example:
+```json
+{
+    "name": "department-name"
+}
+```
 
-## Security Vulnerabilities
+#### Update existing department
+```http
+  PUT /api/departments/${id}
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+| Parameter | Type     | Description                               |
+|:----------|:---------|:------------------------------------------|
+| `name`    | `string` | **Required** name of department to update |
 
-## License
+Request body example:
+```json
+{
+    "name": "department-name"
+}
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+#### Delete department
+
+```http
+  DELETE /api/departments/${id}
+```
+
+
+###   Employee Endpoints
+#### Get all Employees
+
+```http
+  GET /api/employees
+```
+
+| Parameter       | Type      | Description                    |
+|:----------------|:----------|:-------------------------------|
+| `firstname`     | `string`  | search on the firstname        |
+| `lastname`      | `string`  | search on the lastname         |
+| `department_id` | `integer` | filter employees by department |
+| `email`         | `string`  | filter employees by email      |
+
+
+#### Get employees by id
+```http
+  GET /api/employees/${id}
+```
+
+| Parameter | Type      | Description                          |
+|:----------|:----------|:-------------------------------------|
+| `id`      | `integer` | **Required** Id of employee to fetch |
+
+
+
+
+#### Create a new employee
+```http
+  POST /api/employees/
+```
+| Request body param                 | Type      | Description                                              |
+|:-----------------------------------|:----------|:---------------------------------------------------------|
+| `firstname`                        | `string`  | **Required** firstname of employee                       |
+| `lastname`                         | `string`  | **Required** lastname of employee                        |
+| `department_id`                    | `integer` | **Required** department_id of employee he/she belongs to |
+| `email`                            | `string`  | **Required** email id of the employee                    |
+| `contact_numbers`                  | `array`   | **Required** array of object of employee's contact num   |
+| `contact_numbers.*.contact_number` | `string`  | **Required** contact number of the employee              |
+| `addresses`                        | `array`   | **Required** array of object of the employee's address   |
+| `addresses.*.address`              | `string`  | **Required** address of the employee                     |
+| `addresses.*.city`                 | `string`  | **Required** city of the employee                        |
+| `addresses.*.state`                | `string`  | **Required** state of the employee                       |
+| `addresses.*.pin_code`             | `string`  | **Required** pin code of the employee                    |
+
+
+Request body example:
+```json
+{
+    "firstname": "John",
+    "lastname": "Doe",
+    "department_id": 2,
+    "email": "johndoe@example",
+    "contact_numbers": [
+      {
+        "contact_number": "8181818181"
+      },
+       {
+        "contact_number": "9191919191"
+        }
+    ],
+    "addresses": [
+      {
+        "address": "Andheri West",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pin_code": "400 001"
+      }
+    ]
+}
+```
+
+#### Update existing employee
+```http
+  PUT /api/employees/${id}
+```
+| Request body param                 | Type       | Description                                 |
+|:-----------------------------------|:-----------|:--------------------------------------------|
+| `firstname`                        | `string`   | firstname of employee                       |
+| `lastname`                         | `string`   | lastname of employee                        |
+| `department_id`                    | `integer`  | department_id of employee he/she belongs to |
+| `contact_numbers`                  | `array`    | array of object of employee's contact num   |
+| `contact_numbers.*.contact_number` | `string`   | contact number of the employee              |
+| `addresses`                        | `array`    | array of object of the employee's address   |
+| `addresses.*.address`              | `string`   | address of the employee                     |
+| `addresses.*.city`                 | `string`   | city of the employee                        |
+| `addresses.*.state`                | `string`   | state of the employee                       |
+| `addresses.*.pin_code`             | `string`   | pin code of the employee                    |
+
+Request body example:
+```json
+{
+    "firstname": "John",
+    "lastname": "Doe",
+    "department_id": 2,
+    "contact_numbers": [
+      {
+        "contact_number": "8181818181"
+      }
+    ],
+    "addresses": [
+      {
+        "address": "Andheri East",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pin_code": "400 093"
+      }
+    ]
+}
+```
+
+#### Delete Employee
+
+```http
+  DELETE /api/employees/${id}
+```
+
